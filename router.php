@@ -1,6 +1,7 @@
 <?php
 
 class Router {
+  private $server;
   private $path;
   private $method;
   private $get;

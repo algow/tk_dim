@@ -18,7 +18,7 @@ class UserController {
       if(!isset($req['username']) || !isset($req['password'])) {
         return json_encode(messages()[1]('username/password kosong'));
       }
-  
+
       $userData = $this->user->fetchUser($req['username']);
 
       if(!$userData) {
