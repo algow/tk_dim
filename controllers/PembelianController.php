@@ -13,11 +13,21 @@ class PembelianController {
     $this->pembelian = new Pembelian();
   }
 
-  public function addBarang($req, $user) {
+  public function addPembelian($req, $user) {
     try {
       $this->pembelian->insertPembelian($req, $user);
 
       return json_encode(messages()[0]([]));
+    } catch (\Throwable $th) {
+      return json_encode(messages()[2]($th->getMessage()));
+    }
+  }
+
+  public function getAllPembelian() {
+    try {
+      $data = $this->pembelian->fetchAllPembelian();
+
+      return json_encode(messages()[0]($data));
     } catch (\Throwable $th) {
       return json_encode(messages()[2]($th->getMessage()));
     }

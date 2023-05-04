@@ -10,7 +10,7 @@ class User extends BaseModel {
       h.NamaAkses,
       h.Keterangan
     FROM pengguna p 
-    join hakakses h on p.IdAkses=h.IdAkses
+    join (SELECT * FROM hakakses WHERE AKTIF=1) h on p.IdAkses=h.IdAkses
     where p.NamaPengguna='".$uname."'
     ";
 

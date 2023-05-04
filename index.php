@@ -16,6 +16,7 @@ function run() {
   $_POST = json_decode(file_get_contents('php://input'), true);
   $router = new Router($_SERVER, $_GET, $_POST);
 
+  // unrestricted path start 
   $router->post(
     '/login', 
     function($req){
@@ -34,6 +35,8 @@ function run() {
     }
   );
 
+
+  // get user data then authenticate
   $authHeader = array_key_exists('Authorization', apache_request_headers()) 
     ? apache_request_headers()['Authorization'] 
     : null;
@@ -46,11 +49,37 @@ function run() {
   $Utils = new Utils();
   $userData = $Utils->validateJwt($authHeader);
 
+
+  // apakah path dan method boleh diakses oleh current user?
+  $dataAkses = [
+    'nama_akses'=> $userData->NamaAkses,
+    'method'=> strtolower($_SERVER['REQUEST_METHOD']),
+    'path'=> str_replace('/', '', $_SERVER['PATH_INFO'])
+  ];
+
+  $allowed = $Utils->allowAccess($dataAkses);
+
+  if(!$allowed) {
+    http_response_code(403);
+    echo json_encode(messages()[1]('akses tidak diizinkan'));
+    die();
+  }
+
+  // restricted path
+  $router->get(
+    '/pembelian', 
+    function($req){
+      $PembelianController = new PembelianController();
+      echo $PembelianController->getAllPembelian();
+      die();
+    }
+  );
+
   $router->post(
     '/pembelian', 
     function($req, $user){
       $PembelianController = new PembelianController();
-      echo $PembelianController->addBarang($req, $user);
+      echo $PembelianController->addPembelian($req, $user);
       die();
     },
     $userData

@@ -38,8 +38,7 @@ class Router {
     }
   }
 
-  private function formatRoute($str)
-  {
+  private function formatRoute($str) {
     $result = str_replace('/', '', $str);
     return strtolower($result);
   }
