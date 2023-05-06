@@ -5,6 +5,49 @@ require_once __DIR__ . '/BaseModel.php';
 
 class Pembelian extends BaseModel {
 
+  public function updatePembelian($data){
+    $queries = [
+    "UPDATE tk_dim.pembelian
+    SET JumlahPembelian=? 
+    WHERE IdPembelian=?",
+    "UPDATE tk_dim.pembelian
+    SET HargaBeli=?
+    WHERE IdPembelian=?",
+    "UPDATE tk_dim.pembelian
+    SET JumlahPembelian=?,HargaBeli=?
+    WHERE IdPembelian=?"
+    ];
+
+    $query = $queries[0];
+    $updateParameter = [];
+
+    if (isset($data['jumlahpembelian']) && isset($data['hargabeli'])){
+        $query = $queries[2];
+        array_push($updateParameter,$data["JumlahPembelian"],$data["HargaBeli"]);
+    } elseif (isset($data['hargabeli'])){
+        $query = $queries[1];
+        array_push($updateParameter,$data["HargaBeli"]);
+    } else {
+        $query = $queries[0];
+        array_push($updateParameter,$data["JumlahPembelian"]);
+    }
+
+    array_push($updateParameter,$data["IdPembelian"]);
+
+
+    $stmt= $this->getDb()->prepare($query);
+    $stmt->execute($updateParameter);
+}
+
+public function deletePembelian($data){
+  $query = 
+  "DELETE FROM tk_dim.pembelian
+   WHERE IdPembelian=?";
+
+  $stmt= $this->getDb()->prepare($query);
+  $stmt->execute([$data["IdPembelian"]]);
+}
+
   public function insertPembelian($data, $userData) {
     $query = "
       INSERT INTO Pembelian (JumlahPembelian, HargaBeli, IdBarang, IdPengguna, IdSupplier)

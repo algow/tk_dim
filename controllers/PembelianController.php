@@ -23,6 +23,26 @@ class PembelianController {
     }
   }
 
+  public function ubahPembelian($req, $user) {
+    try {
+      $this->pembelian->updatePembelian($req);
+
+      return json_encode(messages()[0]([]));
+    } catch (\Throwable $th) {
+      return json_encode(messages()[2]($th->getMessage()));
+    }
+  }
+
+  public function hapusPembelian($req, $user) {
+    try {
+      $this->pembelian->deletePembelian($req);
+
+      return json_encode(messages()[0]([]));
+    } catch (\Throwable $th) {
+      return json_encode(messages()[2]($th->getMessage()));
+    }
+  }
+
   public function getAllPembelian() {
     try {
       $data = $this->pembelian->fetchAllPembelian();

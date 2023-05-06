@@ -89,6 +89,26 @@ function run() {
     $userData
   );
 
+  $router->post(
+    '/pembelian-update', 
+    function($req, $user){
+      $PembelianController = new PembelianController();
+      echo $PembelianController->ubahPembelian($req, $user);
+      die();
+    },
+    $userData
+  );
+
+  $router->post(
+    '/pembelian-delete', 
+    function($req, $user){
+      $PembelianController = new PembelianController();
+      echo $PembelianController->hapusPembelian($req, $user);
+      die();
+    },
+    $userData
+  );
+
   $router->get(
     '/supplier', 
     function($req){
@@ -134,6 +154,16 @@ function run() {
       die();
     }
   );
+
+  $router->get(
+    '/labarugi',
+    function($req){
+      $DashboardController = new DashboardController();
+      echo $DashboardController->getLaba($req);
+      die();
+    }
+  );
+
 }
 
 run();

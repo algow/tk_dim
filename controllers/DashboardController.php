@@ -22,4 +22,16 @@ class DashboardController {
       return json_encode(messages()[2]($th->getMessage()));
     }
   }
+
+  public function getLaba($req) {
+    try {
+
+      $data = $this->dashboard->fetchLaba();
+
+      return json_encode(messages()[0]($data));
+    } catch (\Throwable $th) {
+      return json_encode(messages()[2]($th->getMessage()));
+    }
+  }
+
 }
