@@ -102,6 +102,16 @@ function run() {
       die();
     }
   );
+
+  $router->post(
+    '/penjualan', 
+    function($req, $user){
+      $PenjualanController = new PenjualanController();
+      echo $PenjualanController->addPenjualan($req, $user);
+      die();
+    },
+    $userData
+  );
   
 //   $router->get('/', function($req){
 //     $HomeController = new HomeController();
