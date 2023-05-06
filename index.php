@@ -93,6 +93,15 @@ function run() {
       die();
     }
   );
+
+  $router->get(
+    '/penjualan', 
+    function($req){
+      $PenjualanController = new PenjualanController();
+      echo $PenjualanController->getAllPenjualan();
+      die();
+    }
+  );
   
 //   $router->get('/', function($req){
 //     $HomeController = new HomeController();
