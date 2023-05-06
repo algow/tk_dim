@@ -43,7 +43,7 @@ class Dashboard extends BaseModel {
               ) main";
 
 
-    $dashboard = $this->db->query($query)->fetchAll();
+    $dashboard = $this->getDb()->query($query)->fetchAll();
     return $dashboard;
   }
 }

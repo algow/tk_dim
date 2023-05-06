@@ -12,7 +12,7 @@ class Pelanggan extends BaseModel {
       $query .= " AND IdPelanggan=" . $id;
     }
 
-    $pelanggan = $this->db->query($query)->fetchAll();
+    $pelanggan = $this->getDb()->query($query)->fetchAll();
     return $pelanggan;
   }
 }

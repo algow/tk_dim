@@ -11,7 +11,7 @@ class Penjualan extends BaseModel {
       VALUES (?, ?, ?, ?, ?);
     ";
 
-    $stmt= $this->db->prepare($query);
+    $stmt= $this->getDb()->prepare($query);
     $stmt->execute([
       $data['jumlah'], 
       $data['harga_satuan'], 
@@ -46,7 +46,7 @@ class Penjualan extends BaseModel {
   order by p.IdPenjualan desc
     ";
 
-    $penjualan = $this->db->query($query)->fetchAll();
+    $penjualan = $this->getDb()->query($query)->fetchAll();
     return $penjualan;
   }
 }
