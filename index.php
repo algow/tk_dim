@@ -11,7 +11,8 @@ require_once __DIR__ . '/controllers/BarangController.php';
 require_once __DIR__ . '/controllers/PembelianController.php';
 require_once __DIR__ . '/controllers/PenjualanController.php';
 require_once __DIR__ . '/controllers/SupplierController.php';
-
+require_once __DIR__ . '/controllers/PelangganController.php';
+require_once __DIR__ . '/controllers/DashboardController.php';
 
 function run() {
   $_POST = json_decode(file_get_contents('php://input'), true);
@@ -113,21 +114,25 @@ function run() {
     },
     $userData
   );
-  
-//   $router->get('/', function($req){
-//     $HomeController = new HomeController();
-//     $HomeController->index($req);
-//   });
 
-//   $router->get('/login', function($req){
-//     $HomeController = new HomeController();
-//     $HomeController->login($req);
-//   });
+  $router->get(
+        '/pelanggan',
+        function($req){
+          $PelangganController = new PelangganController();
+          echo $PelangganController->getAllPelanggan($req);
+          die();
+        }
+      );
 
-//   $router->get('/user', function($req){
-//     $UserController = new UserController();
-//     $UserController->doLogin($req);
-//   });
+      $router->get(
+        '/stok',
+        function($req){
+          $DashboardController = new DashboardController();
+          echo $DashboardController->getStok($req);
+          die();
+        }
+      );
+
 }
 
 run();
