@@ -9,6 +9,7 @@ require_once __DIR__ . '/router.php';
 require_once __DIR__ . '/controllers/UserController.php';
 require_once __DIR__ . '/controllers/BarangController.php';
 require_once __DIR__ . '/controllers/PembelianController.php';
+require_once __DIR__ . '/controllers/PenjualanController.php';
 require_once __DIR__ . '/controllers/SupplierController.php';
 
 
