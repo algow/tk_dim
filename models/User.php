@@ -14,7 +14,7 @@ class User extends BaseModel {
     where p.NamaPengguna='".$uname."'
     ";
 
-    $user = $this->db->query($query)->fetch();
+    $user = $this->getDb()->query($query)->fetch();
     return $user;
   }
 }

@@ -12,7 +12,7 @@ class Supplier extends BaseModel {
       $query .= " AND IdSupplier=" . $id;
     }
 
-    $supplier = $this->db->query($query)->fetchAll();
+    $supplier = $this->getDb()->query($query)->fetchAll();
     return $supplier;
   }
 }

@@ -18,6 +18,8 @@ function run() {
   $_POST = json_decode(file_get_contents('php://input'), true);
   $router = new Router($_SERVER, $_GET, $_POST);
 
+  // /barang
+
   // unrestricted path start 
   $router->post(
     '/login', 
@@ -116,23 +118,22 @@ function run() {
   );
 
   $router->get(
-        '/pelanggan',
-        function($req){
-          $PelangganController = new PelangganController();
-          echo $PelangganController->getAllPelanggan($req);
-          die();
-        }
-      );
+    '/pelanggan',
+    function($req){
+      $PelangganController = new PelangganController();
+      echo $PelangganController->getAllPelanggan($req);
+      die();
+    }
+  );
 
-      $router->get(
-        '/stok',
-        function($req){
-          $DashboardController = new DashboardController();
-          echo $DashboardController->getStok($req);
-          die();
-        }
-      );
-
+  $router->get(
+    '/stok',
+    function($req){
+      $DashboardController = new DashboardController();
+      echo $DashboardController->getStok($req);
+      die();
+    }
+  );
 }
 
 run();

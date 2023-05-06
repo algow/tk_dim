@@ -11,7 +11,7 @@ class Pembelian extends BaseModel {
       VALUES (?, ?, ?, ?, ?);
     ";
 
-    $stmt= $this->db->prepare($query);
+    $stmt= $this->getDb()->prepare($query);
     $stmt->execute([
       $data['jumlah'], 
       $data['harga_satuan'], 
@@ -24,7 +24,7 @@ class Pembelian extends BaseModel {
   public function fetchAllPembelian() {
     $query = "select 
         p.* ,
-        p.JumlahPembelian * p.HargaBeli NilaiPembelian,
+        (p.JumlahPembelian * p.HargaBeli) NilaiPembelian,
         b.NamaBarang ,
         b.Satuan ,
         s.NamaSupplier ,
@@ -46,7 +46,7 @@ class Pembelian extends BaseModel {
       order by p.IdPembelian desc
     ";
 
-    $pembelian = $this->db->query($query)->fetchAll();
+    $pembelian = $this->getDb()->query($query)->fetchAll();
     return $pembelian;
   }
 }

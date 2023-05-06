@@ -12,7 +12,12 @@ class Barang extends BaseModel {
       $query .= " AND IdBarang=" . $id;
     }
 
-    $barang = $this->db->query($query)->fetchAll();
+    $barang = $this->getDb()->query($query)->fetchAll();
     return $barang;
   }
+
+  public function insertBarang($id=null) {
+
+  }
+
 }
