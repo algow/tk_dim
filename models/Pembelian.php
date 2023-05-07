@@ -92,4 +92,39 @@ class Pembelian extends BaseModel {
     $pembelian = $this->getDb()->query($query)->fetchAll();
     return $pembelian;
   }
+
+  public function fetchPenawaran($idBarang) {
+    $query = "
+    select 
+      b.* ,
+      p2.HargaSatuan ,
+      p2.PersenDiskon ,
+      p2.MinPembelian ,
+      p2.MaxPembelian ,
+      p2.IdSupplier ,
+      p2.NamaSupplier
+    from barang b 
+    join (
+      select
+        p.IdBarang ,
+        p.HargaSatuan ,
+        p.PersenDiskon ,
+        p.MinPembelian ,
+        p.MaxPembelian ,
+        p.IdSupplier ,
+        s.NamaSupplier 
+      from penawaransupplier p
+      join supplier s on p.IdSupplier = s.IdSupplier 
+      where p.Aktif=1
+    ) p2 on b.IdBarang = p2.IdBarang 
+    where b.IdBarang=?
+    ";
+
+    $stmt= $this->getDb()->prepare($query);
+    $stmt->execute([$idBarang]);
+
+    $result = $stmt->fetchAll();
+
+    return $result;
+  }
 }

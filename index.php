@@ -2,6 +2,8 @@
 
 header('Access-Control-Allow-Origin: *'); 
 header('Access-Control-Allow-Headers: *'); 
+header('Access-Control-Allow-Methods: *');
+
 
 require_once __DIR__ . '/utils.php';
 require_once __DIR__  . '/messages.php';
@@ -160,6 +162,15 @@ function run() {
     function($req){
       $DashboardController = new DashboardController();
       echo $DashboardController->getLaba($req);
+      die();
+    }
+  );
+
+  $router->get(
+    '/rekomendasi', 
+    function($req){
+      $PembelianController = new PembelianController();
+      echo $PembelianController->getRekomendasiPembelian($req);
       die();
     }
   );
