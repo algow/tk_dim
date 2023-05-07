@@ -8,45 +8,45 @@ class Pembelian extends BaseModel {
   public function updatePembelian($data){
     $queries = [
     "UPDATE tk_dim.pembelian
-    SET JumlahPembelian=? 
-    WHERE IdPembelian=?",
+      SET JumlahPembelian=? 
+      WHERE IdPembelian=?",
     "UPDATE tk_dim.pembelian
-    SET HargaBeli=?
-    WHERE IdPembelian=?",
+      SET HargaBeli=?
+      WHERE IdPembelian=?",
     "UPDATE tk_dim.pembelian
-    SET JumlahPembelian=?,HargaBeli=?
-    WHERE IdPembelian=?"
+      SET JumlahPembelian=?,HargaBeli=?
+      WHERE IdPembelian=?"
     ];
 
     $query = $queries[0];
     $updateParameter = [];
 
-    if (isset($data['jumlahpembelian']) && isset($data['hargabeli'])){
+    if (isset($data['jumlah']) && isset($data['harga_satuan'])){
         $query = $queries[2];
-        array_push($updateParameter,$data["JumlahPembelian"],$data["HargaBeli"]);
-    } elseif (isset($data['hargabeli'])){
+        array_push($updateParameter,$data["jumlah"],$data["harga_satuan"]);
+    } elseif (isset($data['harga_satuan'])){
         $query = $queries[1];
-        array_push($updateParameter,$data["HargaBeli"]);
+        array_push($updateParameter,$data["harga_satuan"]);
     } else {
         $query = $queries[0];
-        array_push($updateParameter,$data["JumlahPembelian"]);
+        array_push($updateParameter,$data["jumlah"]);
     }
 
-    array_push($updateParameter,$data["IdPembelian"]);
+    array_push($updateParameter,$data["id_pembelian"]);
 
 
     $stmt= $this->getDb()->prepare($query);
     $stmt->execute($updateParameter);
-}
+  }
 
-public function deletePembelian($data){
-  $query = 
-  "DELETE FROM tk_dim.pembelian
-   WHERE IdPembelian=?";
+  public function deletePembelian($data){
+    $query = 
+    "DELETE FROM tk_dim.pembelian
+    WHERE IdPembelian=?";
 
-  $stmt= $this->getDb()->prepare($query);
-  $stmt->execute([$data["IdPembelian"]]);
-}
+    $stmt= $this->getDb()->prepare($query);
+    $stmt->execute([$data["IdPembelian"]]);
+  }
 
   public function insertPembelian($data, $userData) {
     $query = "
