@@ -62,6 +62,36 @@ class PembelianController {
       foreach ($dataPenawaran as $penawaran) {
         $data = [
           'nama_toko' => $penawaran['NamaSupplier'],
+          'harga' => intval($penawaran['HargaSatuan']),
+          'diskon' => $penawaran['PersenDiskon'],
+          'min_pembelian' => intval($penawaran['MinPembelian']),
+          'max_pembelian' => intval($penawaran['MaxPembelian']),
+          'harga_net' => intval($penawaran['HargaNet'])
+        ];
+
+        array_push($tokoList, $data);
+      }
+      // print_r($tokoList);
+      // print_r($req['jumlah']);
+      // die();
+
+      $hasilRekomendasi = $this->cariStrategiPembelian($tokoList, $req['jumlah']);
+
+      return json_encode(messages()[0]($hasilRekomendasi));
+    } catch (\Throwable $th) {
+      return json_encode(messages()[2]($th->getMessage()));
+    }
+  }
+
+  public function getRekomendasiPembelian2($req) {
+    try {
+      $dataPenawaran = $this->pembelian->fetchPenawaran($req['id_barang']);
+
+      $tokoList = [];
+
+      foreach ($dataPenawaran as $penawaran) {
+        $data = [
+          'nama_toko' => $penawaran['NamaSupplier'],
           'harga' => $penawaran['HargaSatuan'],
           'diskon' => $penawaran['PersenDiskon'],
           'min_pembelian' => $penawaran['MinPembelian'],
@@ -80,6 +110,50 @@ class PembelianController {
     } catch (\Throwable $th) {
       return json_encode(messages()[2]($th->getMessage()));
     }
+  }
+
+  private function cariStrategiPembelian($tokoList, $jumlahBarang) {
+    $kombinasiPembelian = [];
+    $sisaPembelian = $jumlahBarang;
+    $totalBiaya = 0;
+
+    // if($sisaPembelian > 0) {
+      foreach ($tokoList as $toko) {
+        if($sisaPembelian > 0) {
+
+          $currPembelian = 0;
+    
+          if($sisaPembelian > $toko['max_pembelian']) {
+            $currPembelian = $toko['max_pembelian'];
+          } else {
+            $currPembelian = $sisaPembelian;
+          }
+    
+          $sisaPembelian -= $currPembelian;
+
+          $biayaNet = $toko['harga_net'] * $currPembelian;
+    
+          $kombinasiPembelian[] = [
+            'toko' => $toko['nama_toko'], // Jika toko memiliki nama, bisa ditambahkan di data toko
+            'harga'=> $toko['harga'],
+            'harga_net' => $toko['harga_net'],
+            'diskon'=> $toko['diskon'],
+            'min_pembelian'=> $toko['min_pembelian'],
+            'max_pembelian'=> $toko['max_pembelian'],
+            'biaya' => $biayaNet,
+            'jumlah_beli' => $currPembelian,
+          ];
+
+          $totalBiaya += $biayaNet;
+        }
+      }  
+    // }
+
+    return [
+      'toko' => $kombinasiPembelian,
+      'biaya' => $totalBiaya,
+      'kuantitas' => $jumlahBarang
+    ];
   }
 
 

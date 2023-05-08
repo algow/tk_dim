@@ -95,6 +95,32 @@ class Pembelian extends BaseModel {
 
   public function fetchPenawaran($idBarang) {
     $query = "
+      select
+        p.IdBarang ,
+        p.HargaSatuan ,
+        p.PersenDiskon ,
+        p.MinPembelian ,
+        p.MaxPembelian ,
+        p.IdSupplier ,
+        s.NamaSupplier ,
+        ((1-p.PersenDiskon) * p.HargaSatuan) HargaNet
+      from penawaransupplier p
+      join supplier s on p.IdSupplier = s.IdSupplier 
+      where p.Aktif=1
+      and p.IdBarang=?
+      order by HargaNet
+    ";
+
+    $stmt= $this->getDb()->prepare($query);
+    $stmt->execute([$idBarang]);
+
+    $result = $stmt->fetchAll();
+
+    return $result;
+  }
+
+  public function fetchPenawaran2($idBarang) {
+    $query = "
     select 
       b.* ,
       p2.HargaSatuan ,
